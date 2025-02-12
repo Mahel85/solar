@@ -4,21 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoring Solárneho Systému</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script>
-        function skontrolujHeslo() {
-            let zadaneHeslo = prompt("Zadaj heslo:");
-            let spravneHeslo = "78fec5e1dcdb16428bed296c69294093"; // MD5 hash hesla
-
-            let hash = CryptoJS.MD5(zadaneHeslo).toString();
-
-            if (hash !== spravneHeslo) {
-                document.body.innerHTML = "<h2>Prístup zamietnutý</h2>";
-            } else {
-                document.getElementById("obsah").style.display = "block";
-            }
-        }
-    </script>
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="manifest" href="manifest.json">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,6 +53,20 @@
         }
     </style>
     <script>
+        const hashPassword = "78fec5e1dcdb16428bed296c69294093"; // Hash pre heslo
+
+        function verifyPassword() {
+            const enteredPassword = prompt("Zadajte heslo:");
+            const enteredHash = md5(enteredPassword); // Hashovanie zadaného hesla
+
+            if (enteredHash !== hashPassword) {
+                alert("Nesprávne heslo!");
+                window.location.href = "about:blank"; // Presmerovanie na prázdnu stránku
+            } else {
+                loadData(); // Načítať dáta, ak je heslo správne
+            }
+        }
+
         async function loadData() {
             let url = "https://script.google.com/macros/s/AKfycbych-LCJ37T-02KSUxpmCZcddGw2lCk5rcj3NdEu53s1ed3EY-u80nYHNbUpkqGAj5V/exec";
             try {
@@ -111,7 +112,7 @@
                 }
 
                 document.getElementById("datetime").innerText = getText(lastRow[12]);
-                document.getElementById("extraGauge").innerText = getText(lastRow[3]); 
+                document.getElementById("extraGauge").innerText = getText(lastRow[3]); // Power Out W
 
             } catch (error) {
                 console.error("Chyba pri načítaní údajov:", error);
@@ -119,28 +120,26 @@
             }
         }
 
-        setInterval(loadData, 10000);
+        setInterval(loadData, 10000); // Každých 10 sekúnd načítavaj dáta
     </script>
 </head>
-<body onload="skontrolujHeslo()">
-    <div id="obsah" style="display: none;">
-        <h1>Monitoring Solárneho Systému</h1>
+<body onload="verifyPassword()">
+    <h1>Monitoring Solárneho Systému</h1>
 
-        <div class="container">
-            <div class="gauge"><strong>Grid V:</strong><br> <span id="gridV">Načítavam...</span></div>
-            <div class="gauge"><strong>Grid Hz:</strong><br> <span id="gridHz">Načítavam...</span></div>
-            <div class="gauge"><strong>AC Out:</strong><br> <span id="acOut">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery V:</strong><br> <span id="batteryV">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery Charging:</strong><br> <span id="batteryCharging">Načítavam...</span></div>
-            <div class="gauge"><strong>PV Input Current:</strong><br> <span id="pvInputCurrent">Načítavam...</span></div>
-            <div class="gauge"><strong>PV Input V:</strong><br> <span id="pvInputV">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery Discharging:</strong><br> <span id="batteryDischarging">Načítavam...</span></div>
-            <div class="gauge"><strong>Power:</strong><br> <span id="power">Načítavam...</span></div>
-            <div class="gauge"><strong>Teplota:</strong><br> <span id="temperature">Načítavam...</span></div>
-            <div class="gauge" id="status">Načítavam...</div>
-            <div class="gauge"><strong>Power Out W:</strong><br> <span id="extraGauge">Načítavam...</span></div>
-        </div>
-        <div id="datetime">Načítavam...</div>
+    <div class="container">
+        <div class="gauge"><strong>Grid V:</strong><br> <span id="gridV">Načítavam...</span></div>
+        <div class="gauge"><strong>Grid Hz:</strong><br> <span id="gridHz">Načítavam...</span></div>
+        <div class="gauge"><strong>AC Out:</strong><br> <span id="acOut">Načítavam...</span></div>
+        <div class="gauge"><strong>Battery V:</strong><br> <span id="batteryV">Načítavam...</span></div>
+        <div class="gauge"><strong>Battery Charging:</strong><br> <span id="batteryCharging">Načítavam...</span></div>
+        <div class="gauge"><strong>PV Input Current:</strong><br> <span id="pvInputCurrent">Načítavam...</span></div>
+        <div class="gauge"><strong>PV Input V:</strong><br> <span id="pvInputV">Načítavam...</span></div>
+        <div class="gauge"><strong>Battery Discharging:</strong><br> <span id="batteryDischarging">Načítavam...</span></div>
+        <div class="gauge"><strong>Power:</strong><br> <span id="power">Načítavam...</span></div>
+        <div class="gauge"><strong>Teplota:</strong><br> <span id="temperature">Načítavam...</span></div>
+        <div class="gauge" id="status">Načítavam...</div>
+        <div class="gauge"><strong>Power Out W:</strong><br> <span id="extraGauge">Načítavam...</span></div>
     </div>
+    <div id="datetime">Načítavam...</div>
 </body>
 </html>
