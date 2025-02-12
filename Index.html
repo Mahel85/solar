@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Solárneho Systému</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #001f3d;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .gauge {
+            width: 150px;
+            height: 80px;
+            margin: 10px;
+            background: #eee;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gauge strong {
+            font-size: 16px;
+            color: #8B0000;
+        }
+
+        .gauge#status {
+            background: #ccc;
+        }
+
+        #datetime {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        async function loadData() {
+            let url = "https://script.google.com/macros/s/AKfycbych-LCJ37T-02KSUxpmCZcddGw2lCk5rcj3NdEu53s1ed3EY-u80nYHNbUpkqGAj5V/exec";
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
+                console.log("Načítané dáta:", data);
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    throw new Error("Dáta sú prázdne alebo nie sú vo formáte poľa.");
+                }
+
+                let lastRow = data[0]; // Prvý a jediný riadok obsahuje posledné dáta
+
+                function getText(value) {
+                    return value ? String(value) : "N/A";
+                }
+
+                document.getElementById("gridV").innerText = getText(lastRow[0]);
+                document.getElementById("gridHz").innerText = getText(lastRow[1]);
+                document.getElementById("acOut").innerText = getText(lastRow[2]);
+                document.getElementById("batteryV").innerText = getText(lastRow[4]);
+                document.getElementById("batteryCharging").innerText = getText(lastRow[5]);
+                document.getElementById("pvInputCurrent").innerText = getText(lastRow[6]);
+                document.getElementById("pvInputV").innerText = getText(lastRow[7]);
+                document.getElementById("batteryDischarging").innerText = getText(lastRow[8]);
+                document.getElementById("power").innerText = getText(lastRow[9]);
+                document.getElementById("temperature").innerText = getText(lastRow[10]);
+                
+                let statusText = getText(lastRow[11]).toLowerCase();
+                let statusGauge = document.getElementById("status");
+
+                statusGauge.innerHTML = "<strong>Status:</strong><br>" + statusText;
+
+                if (statusText.includes("bateria")) {
+                    statusGauge.style.background = "green";
+                    statusGauge.style.color = "white";
+                } else if (statusText.includes("siet")) {
+                    statusGauge.style.background = "yellow";
+                    statusGauge.style.color = "black";
+                } else {
+                    statusGauge.style.background = "red";
+                    statusGauge.style.color = "white";
+                }
+
+                document.getElementById("datetime").innerText = getText(lastRow[12]);
+                document.getElementById("extraGauge").innerText = getText(lastRow[3]); // Power Out W
+
+            } catch (error) {
+                console.error("Chyba pri načítaní údajov:", error);
+                document.getElementById("datetime").innerText = "Chyba pri načítaní dát!";
+            }
+        }
+
+        setInterval(loadData, 10000);
+    </script>
+</head>
+<body onload="loadData()">
+    <h1>Monitoring Solárneho Systému</h1>
+
+    <div class="container">
+        <div class="gauge"><strong>Grid V:</strong><br> <span id="gridV">Načítavam...</span></div>
+        <div class="gauge"><strong>Grid Hz:</strong><br> <span id="gridHz">Načítavam...</span></div>
+        <div class="gauge"><strong>AC Out:</strong><br> <span id="acOut">Načítavam...</span></div>
+        <div class="gauge"><strong>Battery V:</strong><br> <span id="batteryV">Načítavam...</span></div>
+        <div class="gauge"><strong>Battery Charging:</strong><br> <span id="batteryCharging">Načítavam...</span></div>
+        <div class="gauge"><strong>PV Input Current:</strong><br> <span id="pvInputCurrent">Načítavam...</span></div>
+        <div class="gauge"><strong>PV Input V:</strong><br> <span id="pvInputV">Načítavam...</span></div>
+        <div class="gauge"><strong>Battery Discharging:</strong><br> <span id="batteryDischarging">Načítavam...</span></div>
+        <div class="gauge"><strong>Power:</strong><br> <span id="power">Načítavam...</span></div>
+        <div class="gauge"><strong>Teplota:</strong><br> <span id="temperature">Načítavam...</span></div>
+        <div class="gauge" id="status">Načítavam...</div>
+        <div class="gauge"><strong>Power Out W:</strong><br> <span id="extraGauge">Načítavam...</span></div>
+    </div>
+    <div id="datetime">Načítavam...</div>
+</body>
+</html>
