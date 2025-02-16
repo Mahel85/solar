@@ -34,22 +34,22 @@
             margin-top: 20px;
         }
 
-        .gauge {
-            width: 150px;
-            height: 80px;
-            margin: 10px;
-            background: #eee;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: black;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+      .gauge {
+    width: 150px;
+    height: 60px;
+    margin: 8px;
+    background: #eee;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
         .gauge strong {
             font-size: 16px;
@@ -97,7 +97,7 @@
                 let statusText = getText(lastRow[11]).toLowerCase();
                 let statusGauge = document.getElementById("status");
 
-                statusGauge.innerHTML = "<strong>Status:</strong><br>" + statusText;
+                statusGauge.innerHTML = "<strong>Status:</strong>" + statusText;
 
                 if (statusText.includes("bateria")) {
                     statusGauge.style.background = "green";
@@ -127,18 +127,18 @@
         <h1>Monitoring Solárneho Systému</h1>
 
         <div class="container">
-            <div class="gauge"><strong>Grid V:</strong><br> <span id="gridV">Načítavam...</span></div>
-            <div class="gauge"><strong>Grid Hz:</strong><br> <span id="gridHz">Načítavam...</span></div>
-            <div class="gauge"><strong>AC Out:</strong><br> <span id="acOut">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery V:</strong><br> <span id="batteryV">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery Charging:</strong><br> <span id="batteryCharging">Načítavam...</span></div>
-            <div class="gauge"><strong>PV Input Current:</strong><br> <span id="pvInputCurrent">Načítavam...</span></div>
-            <div class="gauge"><strong>PV Input V:</strong><br> <span id="pvInputV">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery Discharging:</strong><br> <span id="batteryDischarging">Načítavam...</span></div>
-            <div class="gauge"><strong>Power:</strong><br> <span id="power">Načítavam...</span></div>
-            <div class="gauge"><strong>Teplota:</strong><br> <span id="temperature">Načítavam...</span></div>
+            <div class="gauge"><strong>Grid V:</strong> <span id="gridV">Načítavam...</span></div>
+            <div class="gauge"><strong>Grid Hz:</strong> <span id="gridHz">Načítavam...</span></div>
+            <div class="gauge"><strong>AC Out:</strong> <span id="acOut">Načítavam...</span></div>
+            <div class="gauge"><strong>Battery V:</strong> <span id="batteryV">Načítavam...</span></div>
+            <div class="gauge"><strong>Battery Charging:</strong> <span id="batteryCharging">Načítavam...</span></div>
+            <div class="gauge"><strong>PV Input Current:</strong> <span id="pvInputCurrent">Načítavam...</span></div>
+            <div class="gauge"><strong>PV Input V:</strong> <span id="pvInputV">Načítavam...</span></div>
+            <div class="gauge"><strong>Battery Discharging:</strong> <span id="batteryDischarging">Načítavam...</span></div>
+            <div class="gauge"><strong>Power:</strong> <span id="power">Načítavam...</span></div>
+            <div class="gauge"><strong>Teplota:</strong> <span id="temperature">Načítavam...</span></div>
             <div class="gauge" id="status">Načítavam...</div>
-            <div class="gauge"><strong>Power Out W:</strong><br> <span id="extraGauge">Načítavam...</span></div>
+            <div class="gauge"><strong>Power Out W:</strong> <span id="extraGauge">Načítavam...</span></div>
         </div>
         <div id="datetime">Načítavam...</div>
     </div>
