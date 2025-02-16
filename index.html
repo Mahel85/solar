@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoring Solárneho Systému</title>
+
+    <!-- Knižnica pre MD5 hash -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <!-- Knižnica pre ikony -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
     <script>
         function skontrolujHeslo() {
             let zadaneHeslo = prompt("Zadaj heslo:");
@@ -19,6 +25,7 @@
             }
         }
     </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,7 +71,30 @@
             margin-top: 20px;
             font-size: 18px;
         }
+
+        .weather {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .weather-info {
+            background: #333;
+            border-radius: 10px;
+            padding: 15px;
+            width: 160px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .weather-info i {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
     </style>
+
     <script>
         async function loadData() {
             let url = "https://script.google.com/macros/s/AKfycbych-LCJ37T-02KSUxpmCZcddGw2lCk5rcj3NdEu53s1ed3EY-u80nYHNbUpkqGAj5V/exec";
@@ -119,10 +149,33 @@
             }
         }
 
-        setInterval(loadData, 3755);
+        async function loadWeather() {
+            const apiKey = "18f750449ae136cd48d1f1487b3142e1";
+            const city = "Levice"; // Zmeň podľa potreby
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=sk&appid=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const weather = await response.json();
+
+                if (weather.cod !== 200) throw new Error(weather.message);
+
+                document.getElementById("weatherTemp").innerHTML = `<i class="fas fa-temperature-half"></i> ${weather.main.temp} °C`;
+                document.getElementById("weatherHumidity").innerHTML = `<i class="fas fa-tint"></i> ${weather.main.humidity} %`;
+                document.getElementById("weatherWind").innerHTML = `<i class="fas fa-wind"></i> ${weather.wind.speed} m/s`;
+                document.getElementById("weatherDesc").innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.weather[0].icon}.png" alt="Stav"> ${weather.weather[0].description}`;
+
+            } catch (error) {
+                console.error("Chyba pri načítaní počasia:", error);
+                document.getElementById("weather").innerText = "Chyba načítania počasia!";
+            }
+        }
+
+        setInterval(loadData, 3579);
+        setInterval(loadWeather, 60000);
     </script>
 </head>
-<body onload="skontrolujHeslo()">
+<body onload="skontrolujHeslo(); loadWeather()">
     <div id="obsah" style="display: none;">
         <h1>Monitoring Solárneho Systému</h1>
 
@@ -140,7 +193,15 @@
             <div class="gauge" id="status">Načítavam...</div>
             <div class="gauge"><strong>Power Out W:</strong><br> <span id="extraGauge">Načítavam...</span></div>
         </div>
+
         <div id="datetime">Načítavam...</div>
+
+        <div class="weather">
+            <div class="weather-info" id="weatherTemp">Načítavam...</div>
+            <div class="weather-info" id="weatherHumidity">Načítavam...</div>
+            <div class="weather-info" id="weatherWind">Načítavam...</div>
+            <div class="weather-info" id="weatherDesc">Načítavam...</div>
+        </div>
     </div>
 </body>
 </html>
