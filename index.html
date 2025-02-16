@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoring Solárneho Systému</title>
-
-    <!-- Knižnica pre MD5 hash -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
-    <!-- Knižnica pre ikony -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script>
         function skontrolujHeslo() {
             let zadaneHeslo = prompt("Zadaj heslo:");
@@ -25,7 +20,6 @@
             }
         }
     </script>
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -84,17 +78,22 @@
             background: #333;
             border-radius: 10px;
             padding: 15px;
-            width: 160px;
+            width: 130px;
             text-align: center;
             color: #fff;
         }
 
+        .weather-info img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 5px;
+        }
+
         .weather-info i {
-            font-size: 40px;
+            font-size: 30px;
             margin-bottom: 5px;
         }
     </style>
-
     <script>
         async function loadData() {
             let url = "https://script.google.com/macros/s/AKfycbych-LCJ37T-02KSUxpmCZcddGw2lCk5rcj3NdEu53s1ed3EY-u80nYHNbUpkqGAj5V/exec";
@@ -151,7 +150,7 @@
 
         async function loadWeather() {
             const apiKey = "18f750449ae136cd48d1f1487b3142e1";
-            const city = "Levice"; // Zmeň podľa potreby
+            const city = "Bratislava"; // Zmeň podľa potreby
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=sk&appid=${apiKey}`;
 
             try {
@@ -160,7 +159,7 @@
 
                 if (weather.cod !== 200) throw new Error(weather.message);
 
-                document.getElementById("weatherTemp").innerHTML = `<i class="fas fa-temperature-half"></i> ${weather.main.temp} °C`;
+                document.getElementById("weatherTemp").innerHTML = `<i class="fas fa-thermometer-half"></i> ${weather.main.temp} °C`;
                 document.getElementById("weatherHumidity").innerHTML = `<i class="fas fa-tint"></i> ${weather.main.humidity} %`;
                 document.getElementById("weatherWind").innerHTML = `<i class="fas fa-wind"></i> ${weather.wind.speed} m/s`;
                 document.getElementById("weatherDesc").innerHTML = `<img src="https://openweathermap.org/img/wn/${weather.weather[0].icon}.png" alt="Stav"> ${weather.weather[0].description}`;
