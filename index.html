@@ -16,6 +16,7 @@
                 document.body.innerHTML = "<h2>Prístup zamietnutý</h2>";
             } else {
                 document.getElementById("obsah").style.display = "block";
+                loadData(); // Spusti prvé načítanie dát
             }
         }
     </script>
@@ -26,40 +27,35 @@
             background-color: #001f3d;
             color: white;
         }
-
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 20px;
         }
-
-      .gauge {
-    width: 150px;
-    height: 60px;
-    margin: 8px;
-    background: #eee;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
+        .gauge {
+            width: 150px;
+            height: 60px;
+            margin: 8px;
+            background: #eee;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
         .gauge strong {
             font-size: 16px;
             color: #8B0000;
         }
-
         .gauge#status {
             background: #ccc;
         }
-
         #datetime {
             margin-top: 20px;
             font-size: 18px;
@@ -96,8 +92,7 @@
                 
                 let statusText = getText(lastRow[11]).toLowerCase();
                 let statusGauge = document.getElementById("status");
-
-                statusGauge.innerHTML = "<strong>Status:</strong>" + statusText;
+                statusGauge.innerHTML = "<strong>Status:</strong> " + statusText;
 
                 if (statusText.includes("bateria")) {
                     statusGauge.style.background = "green";
@@ -113,19 +108,18 @@
                 document.getElementById("datetime").innerText = getText(lastRow[12]);
                 document.getElementById("extraGauge").innerText = getText(lastRow[3]); 
 
+                setTimeout(loadData, 3579); // Pokračuje v bežnom intervale
             } catch (error) {
                 console.error("Chyba pri načítaní údajov:", error);
                 document.getElementById("datetime").innerText = "Chyba pri načítaní dát!";
+                setTimeout(loadData, 2000); // Ak je chyba, skúsi znova po 2 sekundách
             }
         }
-
-        setInterval(loadData, 3579);
     </script>
 </head>
 <body onload="skontrolujHeslo()">
     <div id="obsah" style="display: none;">
         <h1>Monitoring Solárneho Systému</h1>
-
         <div class="container">
             <div class="gauge"><strong>Grid V:</strong> <span id="gridV">Načítavam...</span></div>
             <div class="gauge"><strong>Grid Hz:</strong> <span id="gridHz">Načítavam...</span></div>
