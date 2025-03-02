@@ -248,7 +248,7 @@
                 document.getElementById("datetime").innerText = getText(lastRow[12]);
                 document.getElementById("extraGauge").innerText = getText(lastRow[3]); 
 
-                setTimeout(loadData, 3579); // Pokračuje v bežnom intervale
+                setTimeout(loadData, 500); // Pokračuje v bežnom intervale
             } catch (error) {
                 console.error("Chyba pri načítaní údajov:", error);
                 document.getElementById("datetime").innerText = "Chyba pri načítaní dát!";
