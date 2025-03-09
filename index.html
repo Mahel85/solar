@@ -76,146 +76,6 @@
                 let lastRow = data[0];
 
                 function getText(value) {
-                    return value ? String(value) : "N/A";
-                }
-
-                document.getElementById("gridV").innerText = getText(lastRow[0]);
-                document.getElementById("gridHz").innerText = getText(lastRow[1]);
-                document.getElementById("acOut").innerText = getText(lastRow[2]);
-                document.getElementById("batteryV").innerText = getText(lastRow[4]);
-                document.getElementById("batteryCharging").innerText = getText(lastRow[5]);
-                document.getElementById("pvInputCurrent").innerText = getText(lastRow[6]);
-                document.getElementById("pvInputV").innerText = getText(lastRow[7]);
-                document.getElementById("batteryDischarging").innerText = getText(lastRow[8]);
-                document.getElementById("power").innerText = getText(lastRow[9]);
-                document.getElementById("temperature").innerText = getText(lastRow[10]);
-                
-                let statusText = getText(lastRow[11]).toLowerCase();
-                let statusGauge = document.getElementById("status");
-                statusGauge.innerHTML = "<strong>Status:</strong> " + statusText;
-
-                if (statusText.includes("bateria")) {
-                    statusGauge.style.background = "green";
-                    statusGauge.style.color = "white";
-                } else if (statusText.includes("siet")) {
-                    statusGauge.style.background = "yellow";
-                    statusGauge.style.color = "black";
-                } else {
-                    statusGauge.style.background = "red";
-                    statusGauge.style.color = "white";
-                }
-
-                document.getElementById("datetime").innerText = getText(lastRow[12]);
-                document.getElementById("extraGauge").innerText = getText(lastRow[3]); 
-
-                setTimeout(loadData, 3579); // Pokračuje v bežnom intervale
-            } catch (error) {
-                console.error("Chyba pri načítaní údajov:", error);
-                document.getElementById("datetime").innerText = "Chyba pri načítaní dát!";
-                setTimeout(loadData, 2000); // Ak je chyba, skúsi znova po 2 sekundách
-            }
-        }
-    </script>
-</head>
-<body onload="skontrolujHeslo()">
-    <div id="obsah" style="display: none;">
-        <h1>Monitoring Solárneho Systému</h1>
-        <div class="container">
-            <div class="gauge"><strong>Grid V:</strong> <span id="gridV">Načítavam...</span></div>
-            <div class="gauge"><strong>Grid Hz:</strong> <span id="gridHz">Načítavam...</span></div>
-            <div class="gauge"><strong>AC Out:</strong> <span id="acOut">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery V:</strong> <span id="batteryV">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery Charging:</strong> <span id="batteryCharging">Načítavam...</span></div>
-            <div class="gauge"><strong>PV Input Current:</strong> <span id="pvInputCurrent">Načítavam...</span></div>
-            <div class="gauge"><strong>PV Input V:</strong> <span id="pvInputV">Načítavam...</span></div>
-            <div class="gauge"><strong>Battery Discharging:</strong> <span id="batteryDischarging">Načítavam...</span></div>
-            <div class="gauge"><strong>Power:</strong> <span id="power">Načítavam...</span></div>
-            <div class="gauge"><strong>Teplota:</strong> <span id="temperature">Načítavam...</span></div>
-            <div class="gauge" id="status">Načítavam...</div>
-            <div class="gauge"><strong>Power Out W:</strong> <span id="extraGauge">Načítavam...</span></div>
-        </div>
-        <div id="datetime">Načítavam...</div>
-    </div>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="sk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitoring Solárneho Systému</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script>
-        function skontrolujHeslo() {
-            let zadaneHeslo = prompt("Zadaj heslo:");
-            let spravneHeslo = "78fec5e1dcdb16428bed296c69294093"; // MD5 hash hesla
-
-            let hash = CryptoJS.MD5(zadaneHeslo).toString();
-
-            if (hash !== spravneHeslo) {
-                document.body.innerHTML = "<h2>Prístup zamietnutý</h2>";
-            } else {
-                document.getElementById("obsah").style.display = "block";
-                loadData(); // Spusti prvé načítanie dát
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #001f3d;
-            color: white;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .gauge {
-            width: 150px;
-            height: 60px;
-            margin: 8px;
-            background: #eee;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: black;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .gauge strong {
-            font-size: 16px;
-            color: #8B0000;
-        }
-        .gauge#status {
-            background: #ccc;
-        }
-        #datetime {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-    </style>
-    <script>
-        async function loadData() {
-            let url = "https://script.google.com/macros/s/AKfycbych-LCJ37T-02KSUxpmCZcddGw2lCk5rcj3NdEu53s1ed3EY-u80nYHNbUpkqGAj5V/exec";
-            try {
-                let response = await fetch(url);
-                let data = await response.json();
-                console.log("Načítané dáta:", data);
-
-                if (!Array.isArray(data) || data.length === 0) {
-                    throw new Error("Dáta sú prázdne alebo nie sú vo formáte poľa.");
-                }
-
-                let lastRow = data[0];
-
-                function getText(value) {
                     return (value === null || value === undefined || value === "") ? "N/A" : String(value);
                 }
 
@@ -274,8 +134,13 @@
             <div class="gauge" id="status">Načítavam...</div>
             <div class="gauge"><strong>Power Out W:</strong> <span id="extraGauge">Načítavam...</span></div>
         </div>
-        <iframe width="669" height="414" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2G-ok-12alVQYQ2BkxJxbQhelw7r5kyvNYtAr2Ef1GqPJZCgSfg8pOQ9aIrDBi50MdXJE8-3IGh2P/pubchart?oid=922349447&amp;format=interactive"></iframe>
         <div id="datetime">Načítavam...</div>
+
+        <!-- Pridanie grafu -->
+        <div>
+            <h2>Graf</h2>
+            <iframe width="669" height="414" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vS2G-ok-12alVQYQ2BkxJxbQhelw7r5kyvNYtAr2Ef1GqPJZCgSfg8pOQ9aIrDBi50MdXJE8-3IGh2P/pubchart?oid=922349447&amp;format=interactive"></iframe>
+        </div>
     </div>
 </body>
 </html>
