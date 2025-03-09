@@ -70,6 +70,8 @@
         }
     </style>
     <script>
+        let grafNacitanie = false; // Flag na sledovanie, či bol graf už načítaný
+
         async function loadData() {
             let url = "https://script.google.com/macros/s/AKfycbych-LCJ37T-02KSUxpmCZcddGw2lCk5rcj3NdEu53s1ed3EY-u80nYHNbUpkqGAj5V/exec";
             try {
@@ -116,7 +118,11 @@
                 document.getElementById("datetime").innerText = getText(lastRow[12]);
                 document.getElementById("extraGauge").innerText = getText(lastRow[3]); 
 
-                obnovGraf();  // Obnoví graf po načítaní dát
+                // Obnov graf iba pri prvom načítaní dát
+                if (!grafNacitanie) {
+                    grafNacitanie = true; // Nastav flag, že graf bol načítaný
+                    obnovGraf();  // Obnoví graf po načítaní dát
+                }
 
                 setTimeout(loadData, 500); // Pokračuje v bežnom intervale
             } catch (error) {
